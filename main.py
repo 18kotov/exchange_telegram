@@ -11,14 +11,12 @@ def parse_data_from_xml(xmlstring: str) -> list:
         tree = ET.fromstring(xmlstring)
         currencies = tree.findall('Valute')
         for VALUTE in currencies:
-            nominal = VALUTE.find('Nominal')
-            name = VALUTE.find('Name')
-            value = VALUTE.find('Value')
+            nominal, name, value  = VALUTE.find('Nominal'), VALUTE.find('Name'), VALUTE.find('Value')
             if name.text == 'СДР (специальные права заимствования)':
                 continue
             list_currencies.append(f'{nominal.text} {name.text} = {value.text} руб.')
     except Exception as error:
-        logger.error(error)
+        print(error)
 
     return list_currencies
 
@@ -31,6 +29,8 @@ def create_text_message(list_strings: list) -> str:
 def get_message():
     xml_str = get_xml_file()
     list_str = parse_data_from_xml(xml_str)
+    if len(list_str) == 0:
+        list_str = ['Сорри возникла какая-то ошибка!']
     message = create_text_message(list_str)
 
     return message
