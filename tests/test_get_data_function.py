@@ -1,5 +1,5 @@
 from get_xml import join_url
-from main import parse_data_from_xml, create_text_message
+from prepare_data import parse_data_from_xml, create_text_message
 
 
 def test_join_url():
